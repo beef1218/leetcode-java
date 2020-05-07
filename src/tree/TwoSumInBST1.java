@@ -1,5 +1,6 @@
 package tree;
 
+import java.util.ArrayDeque;
 import java.util.Deque;
 
 import utils.TreeNode;
@@ -26,10 +27,10 @@ public class TwoSumInBST1 {
 			if (nodeL == nodeR)
 				return false;
 
-			if (nodeL.key + nodeR.key < target) {
+			if (nodeL.val + nodeR.val < target) {
 				dequeL.pollFirst();
 				pushLeft(dequeL, nodeL.right);
-			} else if (nodeL.key + nodeR.key > target) {
+			} else if (nodeL.val + nodeR.val > target) {
 				dequeR.pollFirst();
 				pushRight(dequeR, nodeR.left);
 			} else

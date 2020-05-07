@@ -1,8 +1,7 @@
 package dp;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-
-import org.junit.jupiter.api.Test;
+import org.junit.Assert;
+import org.junit.Test;
 
 /*
 10. Regular Expression Matching
@@ -32,7 +31,7 @@ public class RegexMatch {
 	@Test
 	public void TestIsMatch() {
 		RegexMatch solution = new RegexMatch();
-		assertFalse(solution.isMatch("abcd", "d*"));
+		Assert.assertFalse(solution.isMatch("abcd", "d*"));
 	}
 
 	public boolean isMatch(String s, String p) {
