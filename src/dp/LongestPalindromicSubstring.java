@@ -28,11 +28,13 @@ public class LongestPalindromicSubstring {
 		int max = 1;
 		for (int i = size - 1; i >= 0; i--) {
 			for (int j = i; j < size; j++) {
+				char c1 = input.charAt(i);
+				char c2 = input.charAt(j);
 				if (i == j)
 					dp[i % 2][j] = 1;
 				else if (i == j - 1)
-					dp[i % 2][j] = input.charAt(i) == input.charAt(j) ? 2 : 0;
-				else if (input.charAt(i) == input.charAt(j) && dp[(i + 1) % 2][j - 1] > 0)
+					dp[i % 2][j] = c1 == c2 ? 2 : 0;
+				else if (c1 == c2 && dp[(i + 1) % 2][j - 1] > 0)
 					dp[i % 2][j] = dp[(i + 1) % 2][j - 1] + 2;
 				else
 					dp[i % 2][j] = 0;
