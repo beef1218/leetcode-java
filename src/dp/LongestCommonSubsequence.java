@@ -1,7 +1,7 @@
 package dp;
 
 /*
-dp[i][j]: longest common subsequence betwen source [0, i-1] and target [0, j-1]
+dp[i][j]: longest common subsequence between source [0, i-1] and target [0, j-1]
 dp[0][j]: 0
 dp[i][0]: 0
 dp[i][j]: if source at i == target at j: dp[i-1][j-1] + 1

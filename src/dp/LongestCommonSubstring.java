@@ -2,7 +2,7 @@ package dp;
 /*
 dp[i][j]: longest common substring between source [0,i] including i and target [0,j] including j
 dp[0][j]: source at 0 == target at j ? 1 : 0
-dp[i][0]: source at i == target at 0
+dp[i][0]: source at i == target at 0 ? 1 : 0
 dp[i][j]: if source at i != target at j: 0
           else: dp[i-1][j-1] + 1
 

@@ -15,6 +15,7 @@ public class InterleaveStrings {
 	dp[i][0]: dp[i-1][0] is true && a at i-1 == c at i-1
 	dp[i][j]: case 1: dp[i-1][j] is true && a at i-1 == c at i + j - 1
 			  case 2: dp[i][j-1] is true && b at j-1 == c at i + j - 1
+			  case 1 || case 2: true
 
 	return dp[a.length()][b.length()]
 	Time: O(a.length() * b.length())
