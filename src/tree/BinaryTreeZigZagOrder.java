@@ -23,21 +23,21 @@ public class BinaryTreeZigZagOrder {
 		while (!deque.isEmpty()) {
 			int size = deque.size();
 			for (int i = 0; i < size; i++) {
+				TreeNode node;
 				if (level % 2 == 0) {
-					TreeNode node = deque.pollLast();
-					result.add(node.val);
+					node = deque.pollLast();
 					if (node.right != null)
 						deque.offerFirst(node.right);
 					if (node.left != null)
 						deque.offerFirst(node.left);
 				} else {
-					TreeNode node = deque.pollFirst();
-					result.add(node.val);
+					node = deque.pollFirst();
 					if (node.left != null)
 						deque.offerLast(node.left);
 					if (node.right != null)
 						deque.offerLast(node.right);
 				}
+				result.add(node.val);
 			}
 			level++;
 		}
