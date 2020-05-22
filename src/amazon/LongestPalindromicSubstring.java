@@ -1,4 +1,4 @@
-package dp;
+package amazon;
 
 /*
 dp[i][j]: whether input from i to j is palindrome (here we are looking for substring, not subsequence, so it must be include the border)
