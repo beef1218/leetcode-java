@@ -1,8 +1,5 @@
 package dp;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 /*
 10. Regular Expression Matching
 
@@ -27,12 +24,6 @@ top to bottom, left to right
 
 */ 
 public class RegexMatch {
-
-	@Test
-	public void TestIsMatch() {
-		RegexMatch solution = new RegexMatch();
-		Assert.assertFalse(solution.isMatch("abcd", "d*"));
-	}
 
 	public boolean isMatch(String s, String p) {
 		if (s == null && p == null)
