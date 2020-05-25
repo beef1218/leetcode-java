@@ -20,8 +20,8 @@ Output: [[2,2,2],[2,2,0],[2,0,1]]
 2. find neighbors with the same color, add to queue, update dedup map.
 3. poll from queue, update color.
 terminate when queue is empty (bfs is done)
-Time: O(n) - n is total number of points
-Space: O(n)
+Time: O(M x N)
+Space: O(M x N)
  */
 public class FloodFill {
 	static int[][] dirs = new int[][]{{-1, 0}, {0, 1}, {1, 0}, {0, -1}};

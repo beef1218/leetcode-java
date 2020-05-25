@@ -8,11 +8,12 @@ Examples
 L = 10, A = {2, 4, 7}, the minimum total cost is 10 + 4 + 6 = 20 (cut at 4 first then cut at 2 and cut at 7)
  */
 /*
-/*
 cuts: [0, 2, 4, 7, end-1]
 dp[i][j]: min cost to cut from i to j
 size = 1: dp[i][j] = 0
-size = 3: dp[i][j] = curs[j] - curs[i] + k from i + 1 to j - 1: min of dp[i][k] + dp[k][j]
+size = 2: dp[i][j] = cuts[j] - cuts[i] (only 1 cut)
+size = 3: dp[i][j] = cuts[j] - cuts[i] + dp[i+1][j] + dp[i][j-1]
+dp[i][j]: cuts[j] - cuts[i] + min of dp[i][k] + dp[k][j] (k from i + 1 to j - 1)
 
     i,k    i,j
           k,j

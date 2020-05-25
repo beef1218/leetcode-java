@@ -1,4 +1,4 @@
-package array;
+package amazon;
 /*
 method1: do prefix product arrays
      [1, 2, 3, 4]
