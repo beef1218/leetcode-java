@@ -1,9 +1,9 @@
-package linkedlist;
+package amazon;
 
-import java.util.List;
 import java.util.PriorityQueue;
 
 import utils.ListNode;
+
 /*
  1. use a heap, offer the head of each list into the heap
  2. expand from heap and generate the next element from this node into the heap; connect polled node to result list
