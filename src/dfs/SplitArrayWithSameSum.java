@@ -43,12 +43,12 @@ public class SplitArrayWithSameSum {
 	/**
 	 * do dfs and add to result
 	 * @param chunkIndex: the index of chunk we are at
-	 * @param index the index of input array we are at
-	 * @param sum the sum of each chunk. If sum == MIN_VALUE, that means we are at the first chunk
-	 * @param k total number of chunk we need
-	 * @param cur our current result
-	 * @param input the input array
-	 * @param result the final result
+	 * @param index: the index of input array we are at
+	 * @param sum: the sum of each chunk. If sum == MIN_VALUE, that means we are at the first chunk
+	 * @param k: total number of chunk we need
+	 * @param input: the input array
+	 * @param cur: our current result   
+	 * @param result: the final result
 	 */
 	private void dfs(int chunkIndex, int index, int sum, int[] input, int k, List<List<Integer>> cur, List<List<List<Integer>>> result) {
 		// base case
