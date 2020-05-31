@@ -22,7 +22,7 @@ public class TopKFrequentWords {
 			wordMap.put(word, wordMap.getOrDefault(word, 0) + 1);
 		}
 		k = Math.min(k, wordMap.size()); // important, to avoid exception
-		PriorityQueue<Map.Entry<String, Integer>> pq = new PriorityQueue<>(k + 1, (a, b)->a.getValue() != b.getValue() ? a.getValue().compareTo(b.getValue()) : b.getKey().compareTo(a.getKey()));
+		PriorityQueue<Map.Entry<String, Integer>> pq = new PriorityQueue<>(k + 1, (a, b) -> !a.getValue().equals(b.getValue()) ? a.getValue().compareTo(b.getValue()) : b.getKey().compareTo(a.getKey()));
 
 		for (Map.Entry<String, Integer> entry : wordMap.entrySet()) {
 			pq.offer(entry);

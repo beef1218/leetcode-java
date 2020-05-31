@@ -53,9 +53,10 @@ public class WordSearch2 {
 		}
 		TrieNode root = buildTree(words); // build a trie tree
 		boolean[][] used = new boolean[board.length][board[0].length];
+		StringBuilder sb = new StringBuilder();
 		for (int r = 0; r < board.length; r++) {
 			for (int c = 0; c < board[0].length; c++) {
-				dfs(r, c, board, used, root, result, new StringBuilder());
+				dfs(r, c, board, used, root, result, sb);
 			}
 		}
 		return new ArrayList<>(result);
