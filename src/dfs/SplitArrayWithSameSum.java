@@ -17,6 +17,9 @@ each node has up to n - k + level number of branches
 
 base case: level == k || end of array is reached
 at each level: use a for loop to get curSum, when curSum == target sum, do recursion
+
+Time: n * k
+Space: k
 */
 public class SplitArrayWithSameSum {
 	public static void main(String[] args) {
