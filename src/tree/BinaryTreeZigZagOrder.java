@@ -7,7 +7,7 @@ import java.util.List;
 import utils.TreeNode;
 /*
  1. level order traversal
- 2. use a deque. push nodes from left / right at altertive levels
+ 2. use a deque. push nodes from left / right at alternative levels
  3. even level: pull from right. enqueue from left. right child -> left child
  odd level: pull from left. enqueue from right. left child -> right child
  */
