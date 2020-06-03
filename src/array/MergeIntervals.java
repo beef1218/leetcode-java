@@ -1,6 +1,8 @@
 package array;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.LinkedList;
 
 /*
@@ -49,9 +51,30 @@ public class MergeIntervals {
         }
         return result;
     }
-    
-    // using linkedlist
+
+    // using stack
     public int[][] merge2(int[][] intervals) {
+        if (intervals == null || intervals.length == 0) {
+            return new int[0][0];
+        }
+        Arrays.sort(intervals, (a, b) -> Integer.valueOf(a[0]).compareTo(b[0]));
+        Deque<int[]> deque = new ArrayDeque<>();
+        for (int[] interval : intervals) {
+            if (deque.isEmpty() || deque.peekFirst()[1] < interval[0]) {
+                deque.offerFirst(interval);
+            } else {
+                deque.peekFirst()[1] = Math.max(deque.peekFirst()[1], interval[1]);
+            }
+        }
+        int[][] result = new int[deque.size()][2];
+        for (int i = result.length - 1; i >= 0; i--) {
+            result[i] = deque.pollFirst();
+        }
+        return result;
+    }
+
+    // using linkedlist
+    public int[][] merge3(int[][] intervals) {
         if (intervals == null || intervals.length == 0) {
             return new int[0][0];
         }
