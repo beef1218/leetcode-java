@@ -54,104 +54,118 @@ The user finished the input, the sentence "i a" should be saved as a historical 
 Use Trie. This still has bugs
  */
 public class AutocompleteSystem {
-	static class TrieNode {
-		int count = 0;
-		String sentence;
-		TrieNode[] children;
-		TrieNode() {
-			children = new TrieNode[27];
-		}
-	}
-	private TrieNode root;
-	private TrieNode cur = root;
-	private StringBuilder sb;
+    public static void main(String[] args) {
 
-	public AutocompleteSystem(String[] sentences, int[] times) {
-		root = new TrieNode();
-		buildTrie(sentences, times);
-		sb = new StringBuilder();
-	}
+        String[] sentences = new String[]{"i love you", "island", "iroman", "i love leetcode"};
+        int[] times = new int[]{5, 3, 2, 2};
+        AutocompleteSystem auto = new AutocompleteSystem(sentences, times);
+        System.out.println(auto.input('i'));
+        System.out.println(auto.input(' '));
+        System.out.println(auto.input('a'));
+        System.out.println(auto.input('c'));
+    }
 
-	private void buildTrie(String[] sentences, int[] times) {
-		for (int i = 0; i < sentences.length; i++) {
-			String sentence = sentences[i];
-			TrieNode node = root;
-			for (int j = 0; j < sentence.length(); j++) {
-				char c = sentence.charAt(j);
-				c = Character.toLowerCase(c);
-				int index = c == ' ' ? 26 : c - 'a';
-				if (node.children[index] == null) {
-					node.children[index] = new TrieNode();
-				}
-				node = node.children[index];
-				if (j == sentence.length() - 1) {
-					node.sentence = sentence;
-					node.count += times[i];
-				}
-			}
-		}
-	}
+    static class TrieNode {
+        int count = 0;
+        String sentence;
+        TrieNode[] children;
 
-	public List<String> input(char c) {
-		if (c == '#') {
-			addSentence();
-			sb = new StringBuilder();
-			cur = root;
-			return new ArrayList<>();
-		} else {
-			sb.append(c);
-			return getSentences(c);
-		}
-	}
+        TrieNode() {
+            children = new TrieNode[27];
+        }
+    }
 
-	private void addSentence() {
-		cur = root;
-		for (int i = 0; i < sb.length(); i++) {
-			char c = sb.charAt(i);
-			c = Character.toLowerCase(c);
-			int index = c == ' ' ? 26 : c - 'a';
-			if (cur.children[index] == null) {
-				cur.children[index] = new TrieNode();
-			}
-			cur = cur.children[index];
-			if (i == sb.length() - 1) {
-				cur.sentence = sb.toString();
-				cur.count++;
-			}
-		}
-	}
+    private TrieNode root;
+    private TrieNode cur;
+    private StringBuilder sb;
 
-	private List<String> getSentences(char c) {
-		List<String> result = new ArrayList<>();
-		List<TrieNode> nodes = new ArrayList<>();
-		int index = c == ' ' ? 26 : c - 'a';
-		if (cur == null || cur.children[index] == null) {
-			cur = null;
-			return result;
-		}
-		cur = cur.children[index];
-		getSentences(cur, nodes);
-		Collections.sort(nodes, (a, b) -> {
-			if (a.count != b.count) {
-				return a.count < b.count ? 1 : -1;
-			}
-			return a.sentence.compareTo(b.sentence);
-		});
-		for (int i = 0; i < 3; i++) {
-			result.add(nodes.get(i).sentence);
-		}
-		return result;
-	}
+    public AutocompleteSystem(String[] sentences, int[] times) {
+        root = new TrieNode();
+        cur = root;
+        buildTrie(sentences, times);
+        sb = new StringBuilder();
+    }
 
-	private void getSentences(TrieNode node, List<TrieNode> result) {
-		if (node == null) {
-			return;
-		}
-		if (node.sentence != null) {
-			result.add(node);
-		}
-		for (int i = 0; i <= 26; i++) {
-			getSentences(node.children[i], result);
-		}
-	}
+    private void buildTrie(String[] sentences, int[] times) {
+        for (int i = 0; i < sentences.length; i++) {
+            String sentence = sentences[i];
+            TrieNode node = root;
+            for (int j = 0; j < sentence.length(); j++) {
+                char c = sentence.charAt(j);
+                c = Character.toLowerCase(c);
+                int index = c == ' ' ? 26 : c - 'a';
+                if (node.children[index] == null) {
+                    node.children[index] = new TrieNode();
+                }
+                node = node.children[index];
+                if (j == sentence.length() - 1) {
+                    node.sentence = sentence;
+                    node.count += times[i];
+                }
+            }
+        }
+    }
+
+    public List<String> input(char c) {
+        if (c == '#') {
+            addSentence();
+            sb = new StringBuilder();
+            cur = root;
+            return new ArrayList<>();
+        } else {
+            sb.append(c);
+            return getSentences(c);
+        }
+    }
+
+    private void addSentence() {
+        cur = root;
+        for (int i = 0; i < sb.length(); i++) {
+            char c = sb.charAt(i);
+            c = Character.toLowerCase(c);
+            int index = c == ' ' ? 26 : c - 'a';
+            if (cur.children[index] == null) {
+                cur.children[index] = new TrieNode();
+            }
+            cur = cur.children[index];
+            if (i == sb.length() - 1) {
+                cur.sentence = sb.toString();
+                cur.count++;
+            }
+        }
+    }
+
+    private List<String> getSentences(char c) {
+        List<String> result = new ArrayList<>();
+        List<TrieNode> nodes = new ArrayList<>();
+        int index = c == ' ' ? 26 : c - 'a';
+        if (cur == null || cur.children[index] == null) {
+            cur = null;
+            return result;
+        }
+        cur = cur.children[index];
+        getSentences(cur, nodes);
+        Collections.sort(nodes, (a, b) -> {
+            if (a.count != b.count) {
+                return a.count < b.count ? 1 : -1;
+            }
+            return a.sentence.compareTo(b.sentence);
+        });
+        for (int i = 0; i < 3 && i < nodes.size(); i++) {
+            result.add(nodes.get(i).sentence);
+        }
+        return result;
+    }
+
+    private void getSentences(TrieNode node, List<TrieNode> result) {
+        if (node == null) {
+            return;
+        }
+        if (node.sentence != null) {
+            result.add(node);
+        }
+        for (int i = 0; i <= 26; i++) {
+            getSentences(node.children[i], result);
+        }
+    }
 }
