@@ -1,4 +1,4 @@
-package other;
+package amazon;
 
 import java.util.HashMap;
 import java.util.Map;

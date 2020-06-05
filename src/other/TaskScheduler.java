@@ -22,7 +22,7 @@ public class TaskScheduler {
 			array[c - 'A']++;
 		}
 
-		PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> b - a);
+		PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> a < b ? b : a);
 		for (int count : array) {
 			if (count > 0)
 				maxHeap.offer(count);
