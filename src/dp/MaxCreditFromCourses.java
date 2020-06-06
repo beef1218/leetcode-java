@@ -16,17 +16,17 @@ inputs are valid
  */
 
 public class MaxCreditFromCourses {
-    public static void main(String[] args) {
-        int[][] courses = new int[][]{{-1,3}, {1,5}, {2,3}, {4,8}, {5,12}};
-        int[] credits = new int[]{5,2,1,3,4};
-        MaxCreditFromCourses solution = new MaxCreditFromCourses();
-        int result = solution.getMaxCredit1(0, 10, courses, credits);
-        int result2 = solution.getMaxCredit2(0, 10, courses, credits);
-        int result3 = solution.getMaxCredit3(0, 10, courses, credits);
-        System.out.println(result);
-        System.out.println(result2);
-        System.out.println(result3);
-    }
+	public static void main(String[] args) {
+		int[][] courses = new int[][]{{-1, 3}, {1, 5}, {2, 3}, {4, 8}, {5, 12}};
+		int[] credits = new int[]{5, 2, 1, 3, 4};
+		MaxCreditFromCourses solution = new MaxCreditFromCourses();
+		int result = solution.getMaxCredit1(0, 10, courses, credits);
+		int result2 = solution.getMaxCredit2(0, 10, courses, credits);
+		int result3 = solution.getMaxCredit3(0, 10, courses, credits);
+		System.out.println(result);
+		System.out.println(result2);
+		System.out.println(result3);
+	}
 
 	static class Course {
 		int start;
@@ -39,6 +39,7 @@ public class MaxCreditFromCourses {
 			this.credit = credit;
 		}
 	}
+
 	/*
     recursion + memoization (backwards)
     helper function returns max credit from courses [i, end]
@@ -110,13 +111,13 @@ public class MaxCreditFromCourses {
 		dp[0] = startTime <= courses[0].start ? courses[0].credit : 0;
 		int maxCredit = dp[0];
 		for (int i = 1; i < courses.length; i++) {
-		    if (courses[i].end > endTime) { // already out of time range
-		        break;
-            }
-		    if (courses[i].start < startTime) { // current course is before our range start time
-		        continue;
-            }
-		    dp[i] = courses[i].credit;
+			if (courses[i].end > endTime) { // already out of time range
+				break;
+			}
+			if (courses[i].start < startTime) { // current course is before our range start time
+				continue;
+			}
+			dp[i] = courses[i].credit;
 			for (int j = 0; j < i; j++) {
 				if (courses[j].end <= courses[i].start) {
 					dp[i] = Math.max(dp[i], dp[j] + courses[i].credit);
@@ -127,63 +128,64 @@ public class MaxCreditFromCourses {
 		return maxCredit;
 	}
 
-    /*
-    DP method2:
-    DP[i]: max credit from course [0, i] (ith course not have to be taken) (DP[i] >= DP[i - 1])
+	/*
+	DP method2:
+	DP[i]: max credit from course [0, i] (ith course not have to be taken) (DP[i] >= DP[i - 1])
 
-    base case:
-    DP[0]: credit[0]
+	base case:
+	DP[0]: credit[0]
 
-    induction rule:
-    DP[i]: case1: not take ith course: DP[i - 1]
-           case2: take ith course: credit[i] + DP[j] where j's end <= i's start  (can use binary search to find k)
+	induction rule:
+	DP[i]: case1: not take ith course: DP[i - 1]
+		   case2: take ith course: credit[i] + DP[j] where j's end <= i's start  (can use binary search to find k)
 
-    return DP[input.length - 1]
+	return DP[input.length - 1]
 
-    Note: when going from start to end, courses need to be sorted by end time
+	Note: when going from start to end, courses need to be sorted by end time
 
-    Time: O(nlogn)
-    Space: O(n)
-     */
-    public int getMaxCredit3(int startTime, int endTime, int[][] input, int[] credits) {
-        Course[] courses = new Course[input.length];
-        for (int i = 0; i < input.length; i++) {
-            courses[i] = new Course(input[i][0], input[i][1], credits[i]);
-        }
-        Arrays.sort(courses, (a, b) -> a.end < b.end ? -1 : 1);
-        int[] dp = new int[courses.length];
-        dp[0] = courses[0].start >= startTime ? courses[0].credit : 0;
-        for (int i = 1; i < courses.length; i++) {
-            if (courses[i].end > endTime) {
-                return dp[i - 1];
-            }
-            int curCourseCredit = courses[i].start >= startTime ? courses[i].credit : 0;
-            int j = getPreviousCourse(courses, courses[i].start);
-            if (j == -1) {
-                dp[i] = Math.max(dp[i - 1], curCourseCredit);
-            } else {
-                dp[i] = Math.max(dp[i - 1], curCourseCredit + dp[j]);
-            }
-        }
-        return dp[courses.length - 1];
-    }
-    // binary search to find the latest course whose end <= target
-    private int getPreviousCourse(Course[] courses, int target) {
-        int left = 0;
-        int right = target - 1;
-        while (left < right - 1) {
-            int mid = left + (right - left) / 2;
-            if (courses[mid].end > target) {
-                right = mid - 1;
-            } else {
-                left = mid;
-            }
-        }
-        if (courses[right].end <= target) {
-            return right;
-        } else if (courses[left].end <= target) {
-            return left;
-        }
-        return -1;
-    }
+	Time: O(nlogn)
+	Space: O(n)
+	 */
+	public int getMaxCredit3(int startTime, int endTime, int[][] input, int[] credits) {
+		Course[] courses = new Course[input.length];
+		for (int i = 0; i < input.length; i++) {
+			courses[i] = new Course(input[i][0], input[i][1], credits[i]);
+		}
+		Arrays.sort(courses, (a, b) -> a.end < b.end ? -1 : 1);
+		int[] dp = new int[courses.length];
+		dp[0] = courses[0].start >= startTime ? courses[0].credit : 0;
+		for (int i = 1; i < courses.length; i++) {
+			if (courses[i].end > endTime) {
+				return dp[i - 1];
+			}
+			int curCourseCredit = courses[i].start >= startTime ? courses[i].credit : 0;
+			int j = getPreviousCourse(courses, courses[i].start);
+			if (j == -1) {
+				dp[i] = Math.max(dp[i - 1], curCourseCredit);
+			} else {
+				dp[i] = Math.max(dp[i - 1], curCourseCredit + dp[j]);
+			}
+		}
+		return dp[courses.length - 1];
+	}
+
+	// binary search to find the latest course whose end <= target
+	private int getPreviousCourse(Course[] courses, int target) {
+		int left = 0;
+		int right = target - 1;
+		while (left < right - 1) {
+			int mid = left + (right - left) / 2;
+			if (courses[mid].end > target) {
+				right = mid - 1;
+			} else {
+				left = mid;
+			}
+		}
+		if (courses[right].end <= target) {
+			return right;
+		} else if (courses[left].end <= target) {
+			return left;
+		}
+		return -1;
+	}
 }
