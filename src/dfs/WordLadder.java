@@ -34,9 +34,9 @@ return its length 5.
 /*
 1. make a wordMap: <word, list of neighbors>
     a. put all words in a set
-    b. for each word including the start word, change one char, see if it's in the set. If yes, put in  wordMap.
+    b. for each word including the start word, change one char, see if it's in the set. If yes, put in wordMap.
 2. use a hashset to store words we've seen
-3. from start, do bfs, for each new word, put in distMap. When endWord is found, return dist.
+3. from start, do bfs, for each new word, put in distMap, keep track of step. When endWord is found, return step.
 4. terminate: end word is found or bfs is done but end word not found
 
 wordList length: M; length of each word: N; neighbor counts: K
