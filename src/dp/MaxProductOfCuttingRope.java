@@ -21,6 +21,9 @@ Time: O(n)
 Space: O(n)
 */
 public class MaxProductOfCuttingRope {
+	/*
+	DP bottom up
+	 */
 	public int maxProduct(int length) {
 		int[] dp = new int[length + 1];
 		dp[1] = 1;
@@ -30,5 +33,26 @@ public class MaxProductOfCuttingRope {
 			}
 		}
 		return dp[length];
+	}
+
+	/*
+	Top down recursion + memoization
+	 */
+	public int maxProduct2(int length) {
+		int[] max = new int[]{0};
+		int[] memo = new int[length + 1];
+		return helper(length, memo);
+	}
+	private int helper(int length, int[] memo) {
+		if (length == 1) {
+			return 1;
+		}
+		if (memo[length] > 0) {
+			return memo[length];
+		}
+		for (int i = 1; i < length; i++) {
+			memo[length] = Math.max(memo[length], i * Math.max(helper(length - i, memo), length - i));
+		}
+		return memo[length];
 	}
 }
