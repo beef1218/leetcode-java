@@ -1,4 +1,4 @@
-package dp;
+package fb;
 /*
 A message containing letters from A-Z is being encoded to numbers using the following ways:
          ‘A’ = 1
