@@ -20,6 +20,9 @@ dp[i][j]: if charAt(i) == charAt(j), dp[i-1][j-1]
 return dp[end][end]
 */
 public class EditDistance {
+	/*
+	Method1: DP
+	 */
 	public int editDistance(String one, String two) {
 		int[][] dp = new int[2][two.length() + 1];
 		for (int i = 0; i <= one.length(); i++) {
@@ -35,5 +38,35 @@ public class EditDistance {
 			}
 		}
 		return dp[one.length() % 2][two.length()];
+	}
+
+	/*
+	Method2: Top down recursion + memoization
+	 */
+	public int editDistance2(String one, String two) {
+		int[][] memo = new int[one.length()][two.length()];
+		return helper(one, two, 0, 0, memo);
+	}
+
+	// returns distance from input [i, end] to [j, end]
+	private int helper(String one, String two, int i, int j, int[][] memo) {
+		if (i == one.length()) {
+			return two.length() - j;
+		}
+		if (j == two.length()) {
+			return one.length() - i;
+		}
+		if (memo[i][j] > 0) {
+			return memo[i][j];
+		}
+		if (one.charAt(i) == two.charAt(j)) {
+			return helper(one, two, i + 1, j + 1, memo);
+		} else {
+			int case1 = helper(one, two, i + 1, j + 1, memo);
+			int case2 = helper(one, two, i, j + 1, memo);
+			int case3 = helper(one, two, i + 1, j, memo);
+			memo[i][j] = Math.min(Math.min(case1, case2), case3) + 1;
+			return memo[i][j];
+		}
 	}
 }
