@@ -63,7 +63,7 @@ public class RemoveInvalidParentheses {
 			helper(index + 1, leftToDelete, rightToDelete, leftCount + 1, rightCount, s, sb, result);
 		} else if (c == ')') {
 			if (leftCount > rightCount) {
-				helper(index + 1, leftToDelete, rightToDelete, leftCount, rightCount + 1, s, sb,                              result);
+				helper(index + 1, leftToDelete, rightToDelete, leftCount, rightCount + 1, s, sb, result);
 			}
 		} else {
 			helper(index + 1, leftToDelete, rightToDelete, leftCount, rightCount, s, sb, result);
@@ -78,21 +78,21 @@ public class RemoveInvalidParentheses {
 		}
 	}
 	private int[] countToBeRemove(String s) {
+		int left = 0;
 		int right = 0;
-		int count = 0;
 		for (char c : s.toCharArray()) {
 			if (c != '(' && c != ')') {
 				continue;
 			}
 			if (c == '(') {
-				count++;
-			} else if (count > 0) {
-				count--;
+				left++;
+			} else if (left > 0) {
+				left--;
 			} else {
 				right++;
 			}
 		}
-		return new int[]{count, right};
+		return new int[]{left, right};
 	}
 
 }

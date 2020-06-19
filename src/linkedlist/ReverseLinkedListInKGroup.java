@@ -29,6 +29,7 @@ public class ReverseLinkedListInKGroup {
 		return dummy.next;
 	}
 
+	// return the new prevTail
 	private ListNode reverse(ListNode prevTail, ListNode nextHead) {
 		ListNode head = prevTail.next;
 		ListNode cur = head;

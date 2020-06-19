@@ -3,6 +3,9 @@ package array;
 import java.util.HashMap;
 import java.util.Map;
 /*
+given an integer array. Find the max length of a subarray whose sum equals k
+ */
+/*
 1. use a hashmap to store prefix sum : index of the first appearance of this sum
 2. linear scan, put number into the map, and check whether num - target exist. keep updating global max
 

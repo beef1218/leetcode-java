@@ -38,9 +38,7 @@ public class GroupAnagrams {
             char[] array = s.toCharArray();
             Arrays.sort(array);
             String ana = new String(array);
-            List<String> list = wordMap.getOrDefault(ana, new ArrayList<>());
-            list.add(s);
-            wordMap.put(ana, list);
+            wordMap.computeIfAbsent(ana, (k) -> new ArrayList<>()).add(s);
         }
         return new ArrayList<>(wordMap.values());
     }

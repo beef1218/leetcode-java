@@ -104,7 +104,7 @@ public class DecodeWays {
 		if (c1 == '0') {
 			return 0;
 		}
-		memo[index] += helper(index + 1, s, memo);
+		memo[index] = helper(index + 1, s, memo);
 		if (index + 1 < s.length()) {
 			char c2 = s.charAt(index + 1);
 			if (c1 == '1' || c1 == '2' && c2 >= '0' && c2 <= '6') {

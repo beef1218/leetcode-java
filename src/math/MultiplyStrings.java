@@ -31,6 +31,8 @@ public class MultiplyStrings {
 		int length1 = num1.length();
 		int length2 = num2.length();
 		int[] array = new int[length1 + length2];
+
+		// important: the nested for loops must iterate from least important digit to most important digit
 		for (int i = length1 - 1; i >= 0; i--) {
 			for (int j = length2 - 1; j >= 0; j--) {
 				int num = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');

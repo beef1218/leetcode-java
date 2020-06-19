@@ -2,7 +2,9 @@ package tree;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+
 import utils.TreeNode;
+
 /*
 use a stack.
 1. push left into stack.
@@ -13,6 +15,7 @@ Time: O(n)
 Space: O(height)
 */
 public class BinaryTreeToDoublyLinkedList {
+	// iterative
 	public TreeNode toDoubleLinkedList(TreeNode root) {
 		if (root == null)
 			return null;
@@ -38,5 +41,36 @@ public class BinaryTreeToDoublyLinkedList {
 			deque.offerFirst(root);
 			root = root.left;
 		}
+	}
+
+
+	// recursive
+	private TreeNode first;
+	private TreeNode last;
+
+	public TreeNode treeToDoublyList(TreeNode root) {
+		if (root == null) {
+			return null;
+		}
+		helper(root);
+		first.left = last;
+		last.right = first;
+		return first;
+	}
+
+	private void helper(TreeNode cur) {
+		if (cur == null) {
+			return;
+		}
+		helper(cur.left);
+		if (first == null) {
+			first = cur;
+		}
+		cur.left = last;
+		if (last != null) {
+			last.right = cur;
+		}
+		last = cur;
+		helper(cur.right);
 	}
 }
