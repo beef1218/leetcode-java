@@ -11,7 +11,7 @@ It will automatically contact the police if two directly-linked houses were brok
 Determine the maximum amount of money the thief can rob tonight without alerting the police.
 */
 /*
- 1. from child: max1 (with child) and max2 (without child) in child subtree
+ 1. from child: max1 (without child) and max2 (with child) in child subtree
  2. curMax1 = leftMax1 + rightLax1 + cur.key; curMax2 = max(leftMax1, leftMax2) + max(rightMax1, rightMax2)
  3. return [curMax1, curMax2]
 

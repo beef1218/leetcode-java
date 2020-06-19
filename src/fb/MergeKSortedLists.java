@@ -1,9 +1,8 @@
-package linkedlist;
-
-import java.util.List;
-import java.util.PriorityQueue;
+package fb;
 
 import utils.ListNode;
+
+import java.util.PriorityQueue;
 
 public class MergeKSortedLists {
 	/*
