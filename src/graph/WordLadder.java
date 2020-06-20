@@ -1,4 +1,4 @@
-package dfs;
+package graph;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -96,5 +96,57 @@ public class WordLadder {
 			}
 		}
 		return wordMap;
+	}
+
+	/*
+	Do bi-directional BFS from start and end at the same time
+	 */
+	public int ladderLength2(String beginWord, String endWord, List<String> wordList) {
+		if (wordList == null || wordList.size() == 0)
+			return 0;
+
+		Map<String, List<String>> wordMap = buildWordMap(beginWord, wordList);
+		if (!wordMap.containsKey(endWord)) {
+			return 0;
+		}
+		Map<String, Integer> seen1 = new HashMap<>();
+		seen1.put(beginWord, 1);
+		Map<String, Integer> seen2 = new HashMap<>();
+		seen2.put(endWord, 0);
+
+		Queue<String> queue1 = new ArrayDeque<>();
+		Queue<String> queue2 = new ArrayDeque<>();
+		queue1.offer(beginWord);
+		queue2.offer(endWord);
+
+		while (!queue1.isEmpty() && !queue2.isEmpty()) {
+			String word1 = queue1.poll();
+			int step1 = seen1.get(word1);
+			String word2 = queue2.poll();
+			int step2 = seen2.get(word2);
+			if (seen1.containsKey(word2)) {
+				return seen1.get(word2) + step2;
+			}
+			for (String nei : wordMap.get(word1)) {
+				if (seen2.containsKey(nei)) {
+					return seen2.get(nei) + step1 + 1;
+				}
+				if (!seen1.containsKey(nei)) {
+					seen1.put(nei, step1 + 1);
+					queue1.offer(nei);
+				}
+			}
+			for (String nei : wordMap.get(word2)) {
+				if (seen1.containsKey(nei)) {
+					return seen1.get(nei) + step2 + 1;
+				}
+				if (!seen2.containsKey(nei)) {
+					seen2.put(nei, step2 + 1);
+					queue2.offer(nei);
+				}
+			}
+		}
+
+		return 0;
 	}
 }

@@ -31,6 +31,7 @@ public class KSmallestInUnsortedArray {
 		int[] result = solution.kSmallest(input, 2);
 		System.out.println(Arrays.toString(result));
 	}
+
 	public int[] kSmallest(int[] array, int k) {
 		if (array.length == 0 || k == 0)
 			return new int[0];
@@ -40,27 +41,36 @@ public class KSmallestInUnsortedArray {
 		Arrays.sort(result);
 		return result;
 	}
+
 	private void quickSelect(int[] array, int k, int left, int right) {
 		if (left == right)
 			return;
 
+		int pivot = partition(array, left, right);
+		int num = pivot - left;
+		if (num < k) {
+			quickSelect(array, k - num, pivot, right);
+		} else if (num > k) {
+			quickSelect(array, k, left, pivot);
+		}
+	}
+
+	private int partition(int[] array, int left, int right) {
 		int pivot = new Random().nextInt(right - left + 1) + left;
 		swap(array, pivot, right);
 		int i = left;
 		int j = right - 1;
 		while (i <= j) {
-			if (array[i] < array[right])
+			if (array[i] < array[right]) {
 				i++;
-			else
+			} else {
 				swap(array, i, j--);
+			}
 		}
 		swap(array, right, i);
-		int num = i - left;
-		if (num < k)
-			quickSelect(array, k - num, i, right);
-		else if (num > k)
-			quickSelect(array, k, left, i);
+		return i;
 	}
+
 	private void swap(int[] array, int i, int j) {
 		int tmp = array[i];
 		array[i] = array[j];
