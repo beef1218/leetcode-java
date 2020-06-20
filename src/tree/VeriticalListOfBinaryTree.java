@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.TreeMap;
 
+import javafx.util.Pair;
 import utils.TreeNode;
 
 /*
@@ -19,50 +20,39 @@ Time: O(n)
 Space: O(n)
 */
 public class VeriticalListOfBinaryTree {
-	static class Wrapper {
-		TreeNode node;
-		int col;
-
-		Wrapper(TreeNode node, int col) {
-			this.node = node;
-			this.col = col;
-		}
-	}
-
-	public List<List<Integer>> verticalPrint(TreeNode root) {
+	public List<List<Integer>> verticalTraversal1(TreeNode root) {
 		List<List<Integer>> result = new ArrayList<>();
-		if (root == null)
+		if (root == null) {
 			return result;
-
-		Map<Integer, List<Integer>> map = new HashMap<>();
-		int minCol = scanByLevel(root, map);
-		for (int i = 0; i < map.size(); i++)
+		}
+		int[] minCol = new int[]{0};
+		Map<Integer, List<Integer>> colLists = new HashMap<>();
+		helper(root, minCol, colLists);
+		for (int i = 0; i < colLists.size(); i++) {
 			result.add(new ArrayList<>());
-
-		for (Map.Entry<Integer, List<Integer>> entry : map.entrySet()) {
-			result.set(entry.getKey() - minCol, entry.getValue());
+		}
+		for (Map.Entry<Integer, List<Integer>> entry : colLists.entrySet()) {
+			result.set(entry.getKey() - minCol[0], entry.getValue());
 		}
 		return result;
 	}
 
-	private int scanByLevel(TreeNode root, Map<Integer, List<Integer>> map) {
-		Queue<Wrapper> queue = new ArrayDeque<>();
-		queue.offer(new Wrapper(root, 0));
-		int minCol = 0;
+	private void helper(TreeNode root, int[] minCol, Map<Integer, List<Integer>> colLists) {
+		Queue<Pair<TreeNode, Integer>> queue = new ArrayDeque<>();
+		queue.offer(new Pair<>(root, 0));
 		while (!queue.isEmpty()) {
-			Wrapper wrapper = queue.poll();
-			TreeNode node = wrapper.node;
-			int col = wrapper.col;
-			minCol = Math.min(minCol, col);
-			List<Integer> list = map.getOrDefault(col, new ArrayList<>());
-			list.add(node.key);
-			map.put(col, list);
-			if (node.left != null)
-				queue.offer(new Wrapper(node.left, col - 1));
-			if (node.right != null)
-				queue.offer(new Wrapper(node.right, col + 1));
+			Pair<TreeNode, Integer> cur = queue.poll();
+			TreeNode node = cur.getKey();
+			int col = cur.getValue();
+			minCol[0] = Math.min(minCol[0], col);
+			colLists.computeIfAbsent(col, (k) -> new ArrayList<>()).add(node.val);
+			if (node.left != null) {
+				queue.offer(new Pair<>(node.left, col - 1));
+			}
+			if (node.right != null) {
+				queue.offer(new Pair<>(node.right, col + 1));
+			}
 		}
-		return minCol;
 	}
 
 	/*
@@ -80,7 +70,7 @@ public class VeriticalListOfBinaryTree {
 		}
 	}
 
-	public List<List<Integer>> verticalOrder(TreeNode root) {
+	public List<List<Integer>> verticalTraversal2(TreeNode root) {
 		if (root == null) {
 			return new ArrayList<>();
 		}

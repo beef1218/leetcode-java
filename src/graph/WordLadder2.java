@@ -1,4 +1,4 @@
-package dfs;
+package graph;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
