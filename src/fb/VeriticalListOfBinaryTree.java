@@ -2,12 +2,14 @@ package fb;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.TreeMap;
 
+import javafx.util.Pair;
 import utils.TreeNode;
 
 /*
@@ -19,50 +21,39 @@ Time: O(n)
 Space: O(n)
 */
 public class VeriticalListOfBinaryTree {
-	static class Wrapper {
-		TreeNode node;
-		int col;
-
-		Wrapper(TreeNode node, int col) {
-			this.node = node;
-			this.col = col;
-		}
-	}
-
-	public List<List<Integer>> verticalPrint(TreeNode root) {
+	public List<List<Integer>> verticalTraversal1(TreeNode root) {
 		List<List<Integer>> result = new ArrayList<>();
-		if (root == null)
+		if (root == null) {
 			return result;
-
-		Map<Integer, List<Integer>> map = new HashMap<>();
-		int minCol = scanByLevel(root, map);
-		for (int i = 0; i < map.size(); i++)
+		}
+		int[] minCol = new int[]{0};
+		Map<Integer, List<Integer>> colLists = new HashMap<>();
+		helper(root, minCol, colLists);
+		for (int i = 0; i < colLists.size(); i++) {
 			result.add(new ArrayList<>());
-
-		for (Map.Entry<Integer, List<Integer>> entry : map.entrySet()) {
-			result.set(entry.getKey() - minCol, entry.getValue());
+		}
+		for (Map.Entry<Integer, List<Integer>> entry : colLists.entrySet()) {
+			result.set(entry.getKey() - minCol[0], entry.getValue());
 		}
 		return result;
 	}
 
-	private int scanByLevel(TreeNode root, Map<Integer, List<Integer>> map) {
-		Queue<Wrapper> queue = new ArrayDeque<>();
-		queue.offer(new Wrapper(root, 0));
-		int minCol = 0;
+	private void helper(TreeNode root, int[] minCol, Map<Integer, List<Integer>> colLists) {
+		Queue<Pair<TreeNode, Integer>> queue = new ArrayDeque<>();
+		queue.offer(new Pair<>(root, 0));
 		while (!queue.isEmpty()) {
-			Wrapper wrapper = queue.poll();
-			TreeNode node = wrapper.node;
-			int col = wrapper.col;
-			minCol = Math.min(minCol, col);
-			List<Integer> list = map.getOrDefault(col, new ArrayList<>());
-			list.add(node.key);
-			map.put(col, list);
-			if (node.left != null)
-				queue.offer(new Wrapper(node.left, col - 1));
-			if (node.right != null)
-				queue.offer(new Wrapper(node.right, col + 1));
+			Pair<TreeNode, Integer> cur = queue.poll();
+			TreeNode node = cur.getKey();
+			int col = cur.getValue();
+			minCol[0] = Math.min(minCol[0], col);
+			colLists.computeIfAbsent(col, (k) -> new ArrayList<>()).add(node.val);
+			if (node.left != null) {
+				queue.offer(new Pair<>(node.left, col - 1));
+			}
+			if (node.right != null) {
+				queue.offer(new Pair<>(node.right, col + 1));
+			}
 		}
-		return minCol;
 	}
 
 	/*
@@ -80,7 +71,7 @@ public class VeriticalListOfBinaryTree {
 		}
 	}
 
-	public List<List<Integer>> verticalOrder(TreeNode root) {
+	public List<List<Integer>> verticalTraversal2(TreeNode root) {
 		if (root == null) {
 			return new ArrayList<>();
 		}
@@ -101,5 +92,64 @@ public class VeriticalListOfBinaryTree {
 		}
 		List<List<Integer>> result = new ArrayList<>(map.values());
 		return result;
+	}
+
+	/*
+	Requirement changed to: for nodes at the same col and same row, sort by their values
+
+	1. do dfs to add all nodes into a list, store <col, row, node.val>
+	2. sort them by col -> row -> val
+	3. add to result
+	 */
+
+	static class Node2 implements Comparable<Node2> {
+		int col;
+		int row;
+		int val;
+
+		Node2(int col, int row, int val) {
+			this.col = col;
+			this.row = row;
+			this.val = val;
+		}
+
+		@Override
+		public int compareTo(Node2 node2) {
+			if (col != node2.col) {
+				return Integer.valueOf(col).compareTo(node2.col);
+			}
+			if (row != node2.row) {
+				return Integer.valueOf(row).compareTo(node2.row);
+			}
+			return Integer.valueOf(val).compareTo(node2.val);
+		}
+	}
+
+	public List<List<Integer>> verticalTraversal(TreeNode root) {
+		List<List<Integer>> result = new ArrayList<>();
+		if (root == null) {
+			return result;
+		}
+		List<Node2> list = new ArrayList<>();
+		dfs(root, 0, 0, list);
+		Collections.sort(list);
+		int minCol = list.get(0).col;
+		int colCount = list.get(list.size() - 1).col - minCol + 1;
+		for (int i = 0; i < colCount; i++) {
+			result.add(new ArrayList<>());
+		}
+		for (Node2 node : list) {
+			result.get(node.col - minCol).add(node.val);
+		}
+		return result;
+	}
+
+	private void dfs(TreeNode node, int col, int row, List<Node2> list) {
+		if (node == null) {
+			return;
+		}
+		list.add(new Node2(col, row, node.val));
+		dfs(node.left, col - 1, row + 1, list);
+		dfs(node.right, col + 1, row + 1, list);
 	}
 }
