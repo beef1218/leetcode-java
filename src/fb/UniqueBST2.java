@@ -27,6 +27,13 @@ The above output corresponds to the 5 unique BST's shown below:
     /     /       \                 \
    2     1         2                 3
  */
+/*
+1. pick each element as root
+2. use a helper function to return the list of unique trees with given range
+3. nested for loop:
+for each element as root: get list of unique trees from left rage; get list of unique trees from right range;
+	for each pair of left unique tree and right unique tree, connect them. return the connected tree to parent
+ */
 public class UniqueBST2 {
 	public List<TreeNode> generateTrees(int n) {
 		if (n <= 0) {
