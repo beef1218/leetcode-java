@@ -2,6 +2,7 @@ package tree;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,5 +92,64 @@ public class VeriticalListOfBinaryTree {
 		}
 		List<List<Integer>> result = new ArrayList<>(map.values());
 		return result;
+	}
+
+	/*
+	Requirement changed to: for nodes at the same col and same row, sort by their values
+
+	1. do dfs to add all nodes into a list, store <col, row, node.val>
+	2. sort them by col -> row -> val
+	3. add to result
+	 */
+
+	static class Node2 implements Comparable<Node2> {
+		int col;
+		int row;
+		int val;
+
+		Node2(int col, int row, int val) {
+			this.col = col;
+			this.row = row;
+			this.val = val;
+		}
+
+		@Override
+		public int compareTo(Node2 node2) {
+			if (col != node2.col) {
+				return Integer.valueOf(col).compareTo(node2.col);
+			}
+			if (row != node2.row) {
+				return Integer.valueOf(row).compareTo(node2.row);
+			}
+			return Integer.valueOf(val).compareTo(node2.val);
+		}
+	}
+
+	public List<List<Integer>> verticalTraversal(TreeNode root) {
+		List<List<Integer>> result = new ArrayList<>();
+		if (root == null) {
+			return result;
+		}
+		List<Node2> list = new ArrayList<>();
+		dfs(root, 0, 0, list);
+		Collections.sort(list);
+		int minCol = list.get(0).col;
+		int colCount = list.get(list.size() - 1).col - minCol + 1;
+		for (int i = 0; i < colCount; i++) {
+			result.add(new ArrayList<>());
+		}
+		for (Node2 node : list) {
+			result.get(node.col - minCol).add(node.val);
+		}
+		return result;
+	}
+
+	private void dfs(TreeNode node, int col, int row, List<Node2> list) {
+		if (node == null) {
+			return;
+		}
+		list.add(new Node2(col, row, node.val));
+		dfs(node.left, col - 1, row + 1, list);
+		dfs(node.right, col + 1, row + 1, list);
 	}
 }
