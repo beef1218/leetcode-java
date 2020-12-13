@@ -1,10 +1,13 @@
 package other;
 
-import javax.xml.bind.annotation.XmlType;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class MyHashMap<K, V> {
 	static class Node<K, V> {
-		private K key;
+		private final K key;
 		private V value;
 		Node<K, V> next;
 
@@ -29,8 +32,8 @@ public class MyHashMap<K, V> {
 	public static final int DEFAULT_CAPACITY = 11;
 	public static final float DEFAULT_LOAD_FACTOR = (float) 0.6;
 	private int size = 0;
-	private int capacity;
-	private float loadFactor;
+	private final int capacity;
+	private final float loadFactor;
 	Node<K, V>[] array;
 
 	public MyHashMap() {
@@ -99,8 +102,11 @@ public class MyHashMap<K, V> {
 		return hash % array.length;
 	}
 
+//	private boolean equalsKey(K key1, K key2) {
+//		return key1 == key2 || key1 != null && key1.equals(key2);
+//	}
 	private boolean equalsKey(K key1, K key2) {
-		return key1 == key2 || key1 != null && key1.equals(key2);
+		return Objects.equals(key1, key2);
 	}
 
 	private synchronized boolean needRehashing() {
@@ -109,7 +115,17 @@ public class MyHashMap<K, V> {
 	}
 
 	private void rehashing() {
-		// new double size array; for each node in old array, do put() to the new array
+		Node<K, V>[] newArray = (Node<K, V>[])(new Node[size * 2]);
+		Arrays.stream(array).forEach(head -> {
+			while (head != null) {
+				int index = getIndex(head.key);
+				Node<K, V> next = head.next;
+				head.next = newArray[index];
+				newArray[index] = head;
+				head = next;
+			}
+		});
+
 	}
 
 	public synchronized int size() {
