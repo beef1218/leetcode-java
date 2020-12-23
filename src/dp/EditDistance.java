@@ -10,14 +10,20 @@ the edit distance between one and two is 2 (one insert “a” at front then rep
  */
 
 /*
-dp[i][j]: distance from one 0 to i-1 to two 0 to j-1
+dp[i][j]: distance from i chars from the beginning of one to j chars from the beginning of two
 base case:
 dp[0][j]: j
 dp[i][j]: i
-dp[i][j]: if charAt(i) == charAt(j), dp[i-1][j-1]
-          else: min(dp[i-1][j-1], dp[i][j-1], dp[i-1][j]) + 1
+dp[i][j]:
+	case1(replace): dp[i-1][j-1] + (charAt(i - 1) == charAt(j - 1) ? 0 : 1)
+	case2(add): dp[i][j - 1] + 1
+	case3(remove): dp[i - 1][j] + 1
+	min(case1, case2, case3)
 
 return dp[end][end]
+
+Time: O(M x N)
+Space: O(M x N) -> optimize to min(M, N)
 */
 public class EditDistance {
 	/*
@@ -27,14 +33,16 @@ public class EditDistance {
 		int[][] dp = new int[2][two.length() + 1];
 		for (int i = 0; i <= one.length(); i++) {
 			for (int j = 0; j <= two.length(); j++) {
-				if (i == 0)
+				if (i == 0) {
 					dp[0][j] = j;
-				else if (j == 0)
+				} else if (j == 0) {
 					dp[i % 2][0] = i;
-				else if (one.charAt(i - 1) == two.charAt(j - 1))
-					dp[i % 2][j] = dp[(i - 1) % 2][j - 1];
-				else
-					dp[i % 2][j] = Math.min(Math.min(dp[(i - 1) % 2][j], dp[i % 2][j - 1]), dp[(i - 1) % 2][j - 1]) + 1;
+				} else {
+					int replace = dp[(i - 1) % 2][j - 1] + (one.charAt(i - 1) == two.charAt(j - 1) ? 0 : 1);
+					int remove = dp[(i - 1) % 2][j] + 1;
+					int add = dp[i % 2][j - 1] + 1;
+					dp[i % 2][j] = Math.min(Math.min(add, remove), replace);
+				}
 			}
 		}
 		return dp[one.length() % 2][two.length()];
